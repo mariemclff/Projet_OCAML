@@ -1,5 +1,6 @@
 open Gfile
 open Tools
+open Fordfulk
     
 let () =
 
@@ -22,8 +23,8 @@ let () =
   and outfile = Sys.argv.(4)
   
   (* These command-line arguments are not used for the moment. *)
-  and _source = int_of_string Sys.argv.(2)
-  and _sink = int_of_string Sys.argv.(3)
+  and source = int_of_string Sys.argv.(2)
+  and sink = int_of_string Sys.argv.(3)
   in
 
   (* Open file *)
@@ -31,8 +32,9 @@ let () =
   let g1 = clone_nodes graph in
   let g2 = gmap graph (fun x -> x ^ "toto" ) in
   let g3 = gmap (add_arc (gmap graph (fun x -> int_of_string(x))) 3 4 2000) (fun x -> string_of_int(x)) in
+  let g4 = find_path (gmap graph (fun x -> int_of_string(x))) source sink in
   (* Rewrite the graph that has been read. *)
-  let () = export outfile g3 in
+  let () = List.iter (Printf.printf "%d ") g4 in
 
   ()
 
