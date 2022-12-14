@@ -22,13 +22,26 @@ let find_path (gr: int graph) source puits =
 let capacite_min graph chemin =
   let rec aux acu noeuds =
     match noeuds with
-    | [] -> []
+    | [] -> acu
+    | id :: [] -> acu
     | id1 :: id2 :: rest ->
       match find_arc graph id1 id2 with
       | Some lbl -> if lbl < acu then aux lbl (id2 :: rest) else aux acu (id2 :: rest)
       | None -> acu
       in
-  aux 0 chemin ;
+  aux max_int chemin ;
   (*tester capacite_min*)
 
-    
+  (*
+let maj_graph graph flot chemin =
+  (* parcourir chemin et soustraire flot sur chaque arc du chemin *)
+  let rec soustraire noeuds =
+    match noeuds with
+    | [] -> graph
+    | id :: [] -> acu
+    | id1 :: id2 :: (* qqch ???? *)
+  in
+  let g1 = gmap graph soustraire in
+  (* parcourir chemin inverse (List.reverse) et ajouter flot sur arc inverse avec add_arc, qui crée l'arc s'il n'existe pas *)
+  (* return un nouveau graphe d'état mis à jour*)
+  *)

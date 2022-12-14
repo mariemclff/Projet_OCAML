@@ -29,12 +29,21 @@ let () =
 
   (* Open file *)
   let graph = from_file infile in
+  let grint = (gmap graph (fun x -> int_of_string(x))) in
   let g1 = clone_nodes graph in
   let g2 = gmap graph (fun x -> x ^ "toto" ) in
-  let g3 = gmap (add_arc (gmap graph (fun x -> int_of_string(x))) 3 4 2000) (fun x -> string_of_int(x)) in
-  let g4 = find_path (gmap graph (fun x -> int_of_string(x))) source sink in
-  (* Rewrite the graph that has been read. *)
+  let g3 = gmap (add_arc grint 3 4 (-2000)) (fun x -> string_of_int(x)) in
+  let g4 = find_path grint source sink in
+  let g5 = capacite_min grint g4 in
+  (* Rewrite the graph that has been read.
+
+  let () = Printf.printf "capacite : %d \n" g5 in
   let () = List.iter (Printf.printf "%d ") g4 in
+     
+  *)
+
+  let () = write_file outfile g3 in
+  
 
   ()
 
