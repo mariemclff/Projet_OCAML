@@ -32,18 +32,24 @@ let () =
   let grint = (gmap graph (fun x -> int_of_string(x))) in
   let g1 = clone_nodes graph in
   let g2 = gmap graph (fun x -> x ^ "toto" ) in
-  let g3 = gmap (add_arc grint 3 4 (-2000)) (fun x -> string_of_int(x)) in
-  let g4 = find_path grint source sink in
+  let g3 = gmap (add_arc grint 0 2 (-8)) (fun x -> string_of_int(x)) in
+  (*let g4 = find_path grint source sink in (* find path *) *)
+  let g4 = find_path2 grint source sink in (* find_path2 avec sécurité *)
   let g5 = capacite_min grint g4 in
-  (* Rewrite the graph that has been read.
+  let g6 = maj_graph grint g5 g4 in
+  let g7 = ford_fulkerson grint source sink in
 
+  
+  (* Rewrite the graph that has been read. *)
+
+  
   let () = Printf.printf "capacite : %d \n" g5 in
   let () = List.iter (Printf.printf "%d ") g4 in
-     
-  *)
-
+  
+  (*
   let () = write_file outfile g3 in
+  *)
+  (*let () = export outfile (gmap g7 (fun x -> string_of_int(x))) in*)
   
 
   ()
-
