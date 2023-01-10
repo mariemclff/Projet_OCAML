@@ -20,6 +20,8 @@ open Tools
 
   List.rev (aux source arcs_source [source])*)
 
+exception Impossible
+
 let capacite_min graph chemin =
   let rec aux acu noeuds =
     match noeuds with
@@ -94,5 +96,30 @@ let ford_fulkerson gr source puits =
     in
   aux gr 0
 
-let retransform gr =
+let finalgraph gr grff =
+(* à faire pour chaque arc de gr => récupérer son id1 et id2*)
+  let maj_arc graph id1 id2 label = 
+    match find_arc grff id1 id2 with
+    | None -> raise Impossible
+    | Some lbl -> new_arc graph id1 id2 (label-lbl)
+
+  in
+  e_fold gr maj_arc (clone_nodes gr)
   
+  (*let new_gr = clone_nodes gr in
+  let rec aux new_gr src =
+    match out_arcs gr src with
+    | [] -> (*trouver quoi faire*)
+    | (id, lbl) :: rest -> 
+      match find_arc id src with
+      | None -> new_arc new_gr src id lbl 
+      | Some lbl -> (*trouver quoi faire*)
+  (*out_arcs de la source -> on les ajoute dans le nv graph*)
+
+  (* puis pour tous les (id, lbl) dans out graphs, on fait ses out_arcs et on les ajoute dans le grpahe à part pour la src du id*)
+
+  (*let rec loop graph = match (depthSearch graph src puits) with
+    |(a::tail) as liste -> loop (updateFlow graph liste)
+    |[] -> graph
+  in loop gr*)
+  *)

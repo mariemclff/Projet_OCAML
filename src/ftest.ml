@@ -38,6 +38,7 @@ let () =
   let g5 = capacite_min grint g4 in
   let g6 = maj_graph grint g5 g4 in
   let g7 = ford_fulkerson grint source sink in
+  let g8 = finalgraph grint g7 in
 
   
   (* Rewrite the graph that has been read. *)
@@ -49,7 +50,7 @@ let () =
   (*
   let () = write_file outfile g3 in
   *)
-  let () = export outfile (gmap g7 (fun x -> string_of_int(x))) in
+  let () = export outfile (gmap g8 (fun x -> string_of_int(x))) in
   
 
   ()
