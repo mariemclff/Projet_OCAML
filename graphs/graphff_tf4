@@ -1,0 +1,35 @@
+digraph finite_state_machine {
+      fontname="Helvetica,Arial,sans-serif"
+      node [fontname="Helvetica,Arial,sans-serif"]
+      edge [fontname="Helvetica,Arial,sans-serif"]
+      rankdir=LR;
+      node [shape = circle];
+2 -> 5  [label = "-766"];
+2 -> 4  [label = "766"];
+5 -> 0  [label = "-343"];
+5 -> 1  [label = "-423"];
+5 -> 2  [label = "766"];
+5 -> 4  [label = "0"];
+8 -> 0  [label = "0"];
+0 -> 5  [label = "343"];
+0 -> 8  [label = "0"];
+0 -> 7  [label = "1380"];
+6 -> 1  [label = "136"];
+6 -> 3  [label = "433"];
+6 -> 7  [label = "-569"];
+7 -> 1  [label = "811"];
+7 -> 0  [label = "-1380"];
+7 -> 6  [label = "569"];
+4 -> 2  [label = "-766"];
+4 -> 5  [label = "0"];
+4 -> 9  [label = "766"];
+3 -> 6  [label = "-433"];
+3 -> 9  [label = "433"];
+9 -> 4  [label = "-766"];
+9 -> 3  [label = "-433"];
+9 -> 1  [label = "-524"];
+1 -> 6  [label = "-136"];
+1 -> 5  [label = "423"];
+1 -> 7  [label = "-811"];
+1 -> 9  [label = "524"];
+ }

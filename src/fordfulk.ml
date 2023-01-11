@@ -21,6 +21,7 @@ open Tools
   List.rev (aux source arcs_source [source])*)
 
 exception Impossible
+exception NoeudInexistant
 
 let capacite_min graph chemin =
   let rec aux acu noeuds =
@@ -81,7 +82,9 @@ let find_path2 (gr: int graph) source puits =
       in
   let arcs_source = out_arcs gr source in
   
-  List.rev (aux source arcs_source [])
+  if (node_exists gr source && node_exists gr puits)
+    then List.rev (aux source arcs_source [])
+  else raise NoeudInexistant
 
 let ford_fulkerson gr source puits = 
   let rec aux graph debit_max =
@@ -106,20 +109,3 @@ let finalgraph gr grff =
   in
   e_fold gr maj_arc (clone_nodes gr)
   
-  (*let new_gr = clone_nodes gr in
-  let rec aux new_gr src =
-    match out_arcs gr src with
-    | [] -> (*trouver quoi faire*)
-    | (id, lbl) :: rest -> 
-      match find_arc id src with
-      | None -> new_arc new_gr src id lbl 
-      | Some lbl -> (*trouver quoi faire*)
-  (*out_arcs de la source -> on les ajoute dans le nv graph*)
-
-  (* puis pour tous les (id, lbl) dans out graphs, on fait ses out_arcs et on les ajoute dans le grpahe à part pour la src du id*)
-
-  (*let rec loop graph = match (depthSearch graph src puits) with
-    |(a::tail) as liste -> loop (updateFlow graph liste)
-    |[] -> graph
-  in loop gr*)
-  *)
