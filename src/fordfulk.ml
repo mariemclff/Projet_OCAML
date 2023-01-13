@@ -1,28 +1,41 @@
 open Graph
 open Tools
 
-(*let find_path (gr: int graph) source puits =
-  (* id = source puis noeud actuel ; chemin = acu ; arcs = list d'arcs suivant le noeud actuel*)
-  let rec aux id arcs chemin =
-    match find_arc gr id puits with
-    | Some lbl -> puits :: chemin
-    | None -> 
-      match arcs with 
-      | [] -> []
-      | (id, lbl) :: rest -> 
-        let next_arcs = out_arcs gr id in
-        let result = aux id next_arcs (id :: chemin) in
-        if result = [] then
-          aux id rest chemin
-  else result 
-      in
-  let arcs_source = out_arcs gr source in
-
-  List.rev (aux source arcs_source [source])*)
-
 exception Impossible
 exception NoeudInexistant
 
+ (* find_path avec une sécurité quand le label est à 0, pour ne plus considérer ce chemin*)
+ (* but : trouver chemin entre source et puits *)
+ let find_path2 (gr: int graph) source puits =
+  (* src = source puis noeud actuel ; chemin = acu ; arcs = list d'arcs suivant le noeud actuel *)
+  let rec aux src arcs chemin = (**)
+    if List.mem src chemin then [] (* vérification qu'on ne revient pas sur un noeud déjà traversé => risque de boucle infinie*)
+    else 
+      match find_arc gr src puits with
+      | None | Some 0 -> 
+        begin
+        match arcs with 
+        | [] -> []
+        | (id, 0) :: rest -> aux src rest chemin
+        | (id, lbl) :: rest -> 
+          let next_arcs = out_arcs gr id in
+          let new_chemin = src :: chemin in
+          let result = aux id next_arcs new_chemin in
+          if result = [] then
+            aux src rest chemin
+          else result
+        end
+      | Some lbl -> puits :: src :: chemin (* si le prochain arc est lié au puits,c'est terminé *)
+
+      in
+  let arcs_source = out_arcs gr source in
+  
+  if (node_exists gr source && node_exists gr puits)
+    then List.rev (aux source arcs_source [])
+  else raise NoeudInexistant
+
+  (* graph : graphe en entrée, chemin : liste des noeuds entre la source et le puits *)
+  (* but : créer un accumulateur qui retient la capacité minimale rencontrée sur le chemin entre la source et le puits *)
 let capacite_min graph chemin =
   let rec aux acu noeuds =
     match noeuds with
@@ -33,12 +46,13 @@ let capacite_min graph chemin =
       | Some lbl -> if lbl < acu then aux lbl (id2 :: rest) else aux acu (id2 :: rest)
       | None -> acu
       in
-      aux max_int chemin
+      aux max_int chemin^
 
-
+(* but : parcourir chemin (sens source -> puits) et soustraire flot sur chaque arc du chemin *)
+(*  et : parcourir chemin (sens puits -> source) et ajouter flot sur chaque arc du chemin *)
+(* parametres : graph : le graphe, flot : resultat de capacite_min, chemin : liste des noeuds entre la source et le puits *)
 let maj_graph graph flot chemin =
-(* parcourir chemin et soustraire flot sur chaque arc du chemin *)
-(* noeuds c'est chemin *)
+(* noeuds = liste des noeuds composant le chemin *)
   let rec soustraire noeuds acugraph =
     match noeuds with
     | [] -> acugraph
@@ -57,35 +71,8 @@ let maj_graph graph flot chemin =
   let chemin_reverse = List.rev(chemin) in
   ajouter chemin_reverse g1
 
-  (* test de créer un find_path avec une sécurité quand le label est à 0, pour ne plus considérer ce chemin*)
-let find_path2 (gr: int graph) source puits =
-  (* src = source puis noeud actuel ; chemin = acu ; arcs = list d'arcs suivant le noeud actuel*)
-  let rec aux src arcs chemin =
-    if List.mem src chemin then []
-    else 
-      match find_arc gr src puits with
-      | None | Some 0 -> 
-        begin
-        match arcs with 
-        | [] -> []
-        | (id, 0) :: rest -> aux src rest chemin
-        | (id, lbl) :: rest -> 
-          let next_arcs = out_arcs gr id in
-          let new_chemin = src :: chemin in
-          let result = aux id next_arcs new_chemin in
-          if result = [] then
-            aux src rest chemin
-          else result
-        end
-      | Some lbl -> puits :: src :: chemin
-
-      in
-  let arcs_source = out_arcs gr source in
-  
-  if (node_exists gr source && node_exists gr puits)
-    then List.rev (aux source arcs_source [])
-  else raise NoeudInexistant
-
+  (* but : effectuer toutes les itérations de l'algo de ford fulkerson jusqu'à ce qu'on puisse plus trouver de chemin empruntable *)
+  (* parametres : graph : le graphe, source : noeud source, puits : noeud puits *)
 let ford_fulkerson gr source puits = 
   let rec aux graph debit_max =
     let chemin = find_path2 graph source puits in
