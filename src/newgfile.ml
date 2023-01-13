@@ -71,6 +71,8 @@ let read_comment graph line dico_guest dico_host =
 
 let from_file_medium path =
 
+(* Création des noeuds guests et hosts *)
+
   let infile = open_in path in
 
   (* Read all lines until end of file. *)
@@ -126,9 +128,18 @@ let from_file_medium path =
   (* FIN TESTS *)
 
 
-(* Ajout du noeud source et du noeud puits*) (* a vérifier que les id des noeuds sont bons au moment de faire le graph*)
+(* Ajout du noeud source et du noeud puits*) (* vérifier que les id des noeuds sont bons au moment de faire le graph*)
   let final_graph = new_node final_graph 0 in
   let final_graph = new_node final_graph id_fin in
+
+
+(* Création des arcs *)
+
+(* ajout des arcs entre la source et tous les noeuds guests avec une capacité de 1*)
+
+(* ajout des arcs entre tous les noeuds hosts et le puits, avec une capacité égale au nombre de guests qu'ils peuvent accueillir*)
+
+(* ajout des arcs entre les noeuds guests et les noeuds hosts en fonction des contraintes *)
 
 (* fonction des trois boules *)
 
