@@ -1,6 +1,7 @@
 open Gfile
 open Tools
 open Fordfulk
+open Newgfile
     
 let () =
 
@@ -27,8 +28,9 @@ let () =
   and sink = int_of_string Sys.argv.(3)
   in
 
-  (* Open file *)
-  let graph = from_file infile in
+  (* Open file - for minimal project *)
+
+  (*let graph = from_file infile in
   let grint = (gmap graph (fun x -> int_of_string(x))) in
   let g1 = clone_nodes graph in
   let g2 = gmap graph (fun x -> x ^ "toto" ) in
@@ -38,19 +40,29 @@ let () =
   let g5 = capacite_min grint g4 in
   let g6 = maj_graph grint g5 g4 in
   let g7 = ford_fulkerson grint source sink in
-  let g8 = finalgraph grint g7 in
+  let g8 = finalgraph grint g7 in*)
 
+
+  (*let () = Printf.printf "capacite : %d \n" g5 in
+  let () = List.iter (Printf.printf "%d ") g4 in*) 
+  
   
   (* Rewrite the graph that has been read. *)
 
-  
- (*let () = Printf.printf "capacite : %d \n" g5 in
-  let () = List.iter (Printf.printf "%d ") g4 in*) 
-  
   (*
   let () = write_file outfile g3 in
   *)
-  let () = export outfile (gmap g8 (fun x -> string_of_int(x))) in
+
+  (* Open file - for medium project *)
+
+  let graph = from_file_medium infile in
+  let g9 = ford_fulkerson graph source sink in
+  let g10 = finalgraph graph g9 in
+
+  (* APPEL POUR PROJET MINIMAL : let () = export outfile (gmap g8 (fun x -> string_of_int(x))) in *)
+
+  (* APPEL POUR PROJET MEDIUM *)
+  let () = export outfile (gmap g10 (fun x -> string_of_int(x))) in
   
 
   ()

@@ -46,7 +46,7 @@ let capacite_min graph chemin =
       | Some lbl -> if lbl < acu then aux lbl (id2 :: rest) else aux acu (id2 :: rest)
       | None -> acu
       in
-      aux max_int chemin^
+      aux max_int chemin
 
 (* but : parcourir chemin (sens source -> puits) et soustraire flot sur chaque arc du chemin *)
 (*  et : parcourir chemin (sens puits -> source) et ajouter flot sur chaque arc du chemin *)

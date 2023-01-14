@@ -1,14 +1,9 @@
 % This is an input_file for the hackers/host problem.
-
 % List of guests : name list of constraints
 g thomas cat-friendly
 g mathis pets 
 g sirine smoke
 g leonie cat-friendly 
-
-% List of hosts : name capacity list of constraints
 h ishaac 1 pets smoke
 h marie 1 cat-friendly
 h wissal 2 smoke
-
-% End of file
