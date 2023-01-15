@@ -130,6 +130,29 @@ let arcs_guests_hosts graph dico_guest dico_host =
   in
   aux1 graph dico_host
 
+  (* ÉCRIRE UNE FONCTION POUR PRINT LA LIST DES GUESTS ET DES HOSTS AVEC LEURS ID *)
+let print_dico dico_guest dico_host =
+  let rec aux_g dico_guest = 
+    match dico_guest with
+    |[] -> Printf.printf " \n"
+    |(id, name, _contraintes) :: rest -> 
+      Printf.printf "%d " id ; 
+      Printf.printf "%s \n" name ; 
+      aux_g rest
+    in 
+  let rec aux_h dico_host = 
+    match dico_host with
+    |[] -> Printf.printf " \n " 
+    |(id, name, _capa, _contraites) :: rest -> 
+      Printf.printf "%d " id ; 
+      Printf.printf "%s \n" name ; 
+      aux_h rest
+  in
+  Printf.printf "Liste des guests :\n" ;
+  aux_g dico_guest ;
+  Printf.printf "Liste des hosts :\n" ;
+  aux_h dico_host
+
 
 let from_file_medium path =
 
@@ -173,28 +196,13 @@ let from_file_medium path =
   
   close_in infile ;
 
-(* TESTS À ENLEVER *)
-  let rec print_guest list = match list with
-    |(id, name, list)::rest -> Printf.printf "%d " id; Printf.printf "%s \n" name; print_guest rest
-    |[] -> Printf.printf "%s" "fin guests\n"
-  in
-
-  let rec print_host list = match list with
-    |(id, name, nb_place, _)::rest -> Printf.printf "%d " id; Printf.printf "%d " nb_place; Printf.printf "%s \n" name; print_host rest
-    |[] -> Printf.printf "%s" "fin hosts\n "
-  in
-
-  print_guest dico_guest;
-  print_host dico_host;
-
-  (* FIN TESTS *)
-
+  print_dico dico_guest dico_host ;
 
   let id_puits = id_last in
 
   Printf.printf "id_puits = %d \n" id_puits ;
   
-(* Ajout du noeud source et du noeud puits*) (* vérifier que les id des noeuds sont bons au moment de faire le graph*)
+(* Ajout du noeud source et du noeud puits*)
   let final_graph = new_node final_graph 0 in
   let final_graph = new_node final_graph id_puits in
 
